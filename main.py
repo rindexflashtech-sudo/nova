@@ -18,10 +18,10 @@ logger = logging.getLogger(__name__)
 # Environment variable from Railway
 BOT_TOKEN = os.getenv("BOT_TOKEN")
 
-# Optional: Replace with your actual ImgBB direct link or set to None
+# Optional: Replace with your direct image link (or set to None)
 IMAGE_URL = "https://via.placeholder.com/600x300.png?text=Welcome+To+Our+Community"
 
-# Professional & Attractive Message
+# Professional & Attractive Message sent to the user
 CUSTOM_MESSAGE = (
     "🚀 **WELCOME TO THE COMMUNITY!**\n\n"
     "Your join request has been received. You are one step away from accessing exclusive insights, daily updates, and premium resources.\n\n"
@@ -46,7 +46,7 @@ async def handle_join_request(update: Update, context: ContextTypes.DEFAULT_TYPE
 
     logger.info(f"Received join request from {user.id} ({user.first_name}) in {chat.title}")
 
-    # Buttons that appear below the message (you can change the URLs later)
+    # Buttons layout (You can update URLs later)
     keyboard = [
         [
             InlineKeyboardButton("🌐 Official Website", url="https://example.com"),
@@ -63,7 +63,7 @@ async def handle_join_request(update: Update, context: ContextTypes.DEFAULT_TYPE
 
     try:
         if IMAGE_URL:
-            # Send photo with message caption & inline buttons
+            # Send photo with caption and buttons
             await context.bot.send_photo(
                 chat_id=chat_join_request.user_chat_id or user.id,
                 photo=IMAGE_URL,
@@ -72,16 +72,16 @@ async def handle_join_request(update: Update, context: ContextTypes.DEFAULT_TYPE
                 parse_mode="Markdown"
             )
         else:
-            # Send text-only message
+            # Send text-only message if no image URL
             await context.bot.send_message(
                 chat_id=chat_join_request.user_chat_id or user.id,
                 text=full_text,
                 reply_markup=reply_markup,
                 parse_mode="Markdown"
             )
-        logger.info(f"Successfully sent direct promotional message to {user.id}")
+        logger.info(f"Successfully sent promotional message to user {user.id}")
     except Exception as e:
-        logger.error(f"Failed to send direct message to {user.id}: {e}")
+        logger.error(f"Failed to send direct message to user {user.id}: {e}")
 
 
 def main():
